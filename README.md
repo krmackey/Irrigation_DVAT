@@ -7,7 +7,7 @@ Irrigation is an essential device in the U.S. agricultural industry, as it impro
 
 In this project, I am going to make a tool in Dash where a user can visualize and analyze irrigation data from the United States Departmentment of Agriculture (USDA). By using this tool, a user can specify an individual or multiple states, the specific data they want to visualize or analyze, and what years the data to be visualized or analyzed reflects. The tool can be used to aid in creating research reports, serve as reference material for government officials, and be used in classroom settings for students studying environmental science and its associated public policies and economics.
 
-The current status of my project is that there is a database containing cleaned data, and a series of functions querying it using values stored in a dictionary. Each function represents a decision the user will have to make, and can be represented with this [flowchart](writeup/Flowchart_of_decisions).
+The current status of my project is that there is a database containing cleaned data, and a series of functions querying it using values stored in a dictionary. Each function represents a decision the user will have to make, and can be represented with this [flowchart](writeup/Flowchart_of_decisions.png).
 
 
 A more detailed description of my project can be found in my writeup found here.
