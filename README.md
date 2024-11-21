@@ -2,10 +2,4 @@
 ### Kirin Mackey
 
 ## Quick Start Guide
-To explore my current code, first create a `data` folder, containing both files held in the `data` [folder](irrigation/data/) in this repository.
-
-Project Penney is a project designed to simulate Penney's Game, a game played between two players where each player chooses a sequence of three card colors (e.g. Red, Black, Black). Points are awarded to players if their sequence appears when pulling cards sequentially from a well-shuffled deck. Penney's Game is of interest because the probability of winning is not equal; if the second player learns the sequence chosen by the first player, they can follow a rule to optimize their chances of winning. More information can be found in [the Wikipedia page](https://en.wikipedia.org/wiki/Penney%27s_game). 
-
-Note that our simulation runs two variations of Penney's Game, which have different rules: 
-1. For version 1, players are scored based on the number of "tricks" they earn. For example, if a player's sequence "Red, Black, Black" appears, the deck is cleared and the player earns 1 point. 
-2. For version 2, players are scored based on the number of cards they earn. If a player's sequence "Red, Black, Black" appears, the deck is cleared and the player earns _all_ the cards in the deck. 
+To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the United States Departmentment of Agriculture, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found [here](writeup/Revised_Project_Proposal.pdf). You'll then also want to create a `src` folder containing the [irrigation_db.py](src/irrigation_db.py) file found in the `src` folder in this repository. This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the [demo.ipynb](demo.ipynb) notebook to look at my functions with some documentation as well as some examples (one of which directly references my writeup) to run through.   
