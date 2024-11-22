@@ -21,6 +21,7 @@ To explore my current code, first create a `data` folder, containing both files 
 
 - `__init__(self, path_db: str, create: bool = False)-> None`
     - Constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
+    - If the user does not specify `create` and the path named in `path_db` does not exist, an error message will appear.
     - Returns `None`
 - `connect(self)->None`
     - Sets up a connection to the database and enables foriegn key constraint checking
@@ -54,7 +55,7 @@ To explore my current code, first create a `data` folder, containing both files 
     - Cleans the 'Domain Category' and 'Data Item' columns in the dataframe to remove redundant information across columns. More specific information on what is removed can be found in comments in the irrigation_db.py file 
     - Returns a dictionary with its keys as strings, and their corresponding values as pandas DataFrames
 
-### Functions in `demo.ipynb`
+### Functions in [`demo.ipynb`](demo.ipynb)
 - `get_commodity()->np.ndarray[np.ndarray[str]]`
     - Queries `tMain` for distinct commodities (energy, facilities & equipment, labor, practices, pumps, water, and wells)
     - Returns a multidimensional numpy array giving the names of the commodities a user can choose from
