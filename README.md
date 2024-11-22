@@ -17,7 +17,7 @@ A more detailed description of my project can be found in my writeup found here.
 To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found. You'll then also want to create a `src` folder containing the [irrigation_db.py](src/irrigation_db.py) file found in the `src` folder in this repository. This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the [demo.ipynb](demo.ipynb) notebook to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. 
 
 ## Extended Function Descriptions
-### Functions in the DB class located irrigation_db.py
+### Functions in the DB class located in irrigation_db.py
 
 - `__init__(self, path_db: str, create: bool = False)`
     - constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
@@ -30,18 +30,18 @@ To explore my current code, first create a `data` folder, containing both files 
     - Returns `None`
 - `run_query(self, sql:str)`
     - Sets up connection to database
-    - Performs pd.read_sql
+    - Performs `pd.read_sql`
     - Returns results from the query in a pandas DataFrame
 - `drop_all_tables(self)`
-    - Drops the tState and tMain tables made with `prep_data`, `load_data`, and `load_table`
+    - Drops the `tState` and `tMain` tables made with `prep_data`, `load_data`, and `load_table`
     - Returns `None`
 - `build_tables(self)` 
-    - Drops the tState and tMain tables made with `prep_data`, `load_data`, and `load_table` in case they already exist
-    - Builds empty relational table tMain with primary keys: state_id, year, commodity, data_item, domain, and domain_category. All columns are of the text type except a `value` column that is numeric because some entries in the USDA irrigation data had decimal points
-    - Builds empty relational table tState with state_id as primary key. All columns are of the text type
+    - Drops the `tState` and `tMain` tables made with `prep_data`, `load_data`, and `load_table` in case they already exist
+    - Builds empty relational table `tMain` with primary keys: `state_id`, `year`, `commodity`, `data_item`, `domain`, and `domain_category`. All columns are of the text type except a `value` column that is numeric because some entries in the USDA irrigation data had decimal points
+    - Builds empty relational table `tState` with `state_id` as primary key. All columns are of the text type.
     - Returns `None`
 - `load_data(self)`
-    - Inserts preprocessed data created in `prep_data` into the appropriate relational tables (tMain or tState) using sql and by calling `load_table`
+    - Inserts preprocessed data created in `prep_data` into the appropriate relational tables (`tMain` or `tState`) using sql and by calling `load_table`
     - Returns `None`
 - `load_table(self,sql:str, data:pd.DataFrame)`
     - Takes in a sql query represented stored as string named `sql`
@@ -55,15 +55,40 @@ To explore my current code, first create a `data` folder, containing both files 
     - Returns a dictionary with its keys as strings, and their corresponding values as pandas DataFrames
 
 ### Functions in demo.ipynb
-- `get_commodity`
-- `get_domains`
-- `get_data_items`
-- `get_domain_categories`
-- `number_dt_question`
+- `get_commodity()`
+    - Queries `tMain` for distinct commodities (energy, facilities & equipment, labor, practices, pumps, water, and wells)
+    - Returns a multidimensional numpy array giving the names of the commodities a user can choose from
+- `get_domains(comm_params:dict[str,list[str]])`
+    - To be run after `get_commodity`
+    - Uses a dictionary `comm_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id` and `commodity` at this step)
+    - Sets string that utilizes json and json trees to query the database
+    - Uses `pd.read_sql` with query
+    - Returns a multidimensional numpy array giving the names of the domains a user can choose from (dependent on their choice of commodity)
+- `get_data_items(dt_params:dict[str,list[str]])`
+    - To be run after `get_domains`
+    - Uses a dictionary `dt_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id`, `commodity`, and `domain` at this step)
+    - Sets string that utilizes json and json trees to query the database
+    - Returns a multidimensional numpy array giving the names of the data items a user can choose from (dependent on their choice of commodity and domain)
+- `get_domain_categories(dc_params:dict[str,list[str]])`
+    - to be run after `get_data_items`
+    - Uses a dictionary `dc_params` passed in which its keys are strings and each values is a list of strings (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step)
+    - Checks whether the user specified `domain` as TOTAL. If they did, that means the only domain categories to choose from are named UNSPECIFIED. The `number_dt_question` and `intermediate_domain_categories` functions to solve this issue and either exits this function (if the user wants to use only 1 data item to compare states or years against each other), or provides other data items with `domain` as TOTAL that use the same units as the original data item chosen. They are also within the same commodity as the original data item chosen.
+    - Sets string that utilizes json and json trees to query the database
+    - Returns either a multidimensional numpy array giving the names of the domain categories or possibly data items a user can choose from (dependent on their choices of commodity, domain, and data item) 
+- `number_dt_question()`
+    - Called in `get_domain_categories` when handling case in which user had chosen domain = TOTAL
+    - Utilizes `input()` function and used in the event the user specified `domain` as 'TOTAL'
+    - Asks whether the user only wants one data item to analyze (and therefore look at the relationships between states or years) or multiple data items
+    - The user needs to press enter after either typing in 'multiple' or 'one' (but without the quotation marks)
+    - Will likely turn into some sort of encoding function, called when a user clicks a button (Multiple or One)
+    - Returns the user input as a string
 - `intermediate_domain_categories`
+    - Will be called by `get_domain_categories` if the user specified `domain` as 'TOTAL'
 - `get_years`
+    - To be run after `get_domain_categories
 - `which_statistic`
 - `check_if_time_barplot`
 - `final_query`
 - `set_group_by`
 - `execute_final_query`
+    - To be run after `final_query`, as its input is `final_query`'s output
