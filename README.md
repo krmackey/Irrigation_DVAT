@@ -20,8 +20,8 @@ To explore my current code, first create a `data` folder, containing both files 
 ### Functions in the DB class located in irrigation_db.py
 
 - `__init__(self, path_db: str, create: bool = False)-> None`
-    - constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
-    - returns `None`
+    - Constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
+    - Returns `None`
 - `connect(self)->None`
     - Sets up a connection to the database and enables foriegn key constraint checking
     - Returns `None` 
@@ -48,30 +48,30 @@ To explore my current code, first create a `data` folder, containing both files 
     - Uses the `to_dict` function in pandas to convert the pandas DataFrame passed in into a dictionary and inserts the data row by row into the table specified by the sql query stored as `sql`
     - Returns None
 - `prep_data(self)->dict[str, pd.DataFrame]`
-    - reads the data stored in the Irrigation_Data.csv file
-    - drops all unnecessary columns and rows that have either no information or information that does relate to this project's purpose
-    - casts columns to their proper types
-    - cleans the 'Domain Category' and 'Data Item' columns in the dataframe to remove redundant information across columns. More specific information on what is removed can be found in comments in the irrigation_db.py file 
+    - Reads the data stored in the Irrigation_Data.csv file
+    - Drops all unnecessary columns and rows that have either no information or information that does relate to this project's purpose
+    - Casts columns to their proper types
+    - Cleans the 'Domain Category' and 'Data Item' columns in the dataframe to remove redundant information across columns. More specific information on what is removed can be found in comments in the irrigation_db.py file 
     - Returns a dictionary with its keys as strings, and their corresponding values as pandas DataFrames
 
 ### Functions in demo.ipynb
-- `get_commodity()->np.ndarray[str]`
+- `get_commodity()->np.ndarray[np.ndarray[str]]`
     - Queries `tMain` for distinct commodities (energy, facilities & equipment, labor, practices, pumps, water, and wells)
     - Returns a multidimensional numpy array giving the names of the commodities a user can choose from
 - `get_domains(comm_params:dict[str,list[str]])->np.ndarray[str]`
     - To be run after `get_commodity`
-    - Uses a dictionary `comm_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id` and `commodity` at this step)
+    - Uses a dictionary `comm_params` passed in which its keys are strings and each value is an array of strings (only includes `state_id` and `commodity` at this step)
     - Sets string that utilizes json and json trees to query the database
     - Uses `pd.read_sql` with the query
     - Returns a multidimensional numpy array giving the names of the domains a user can choose from (dependent on their choice of commodity)
-- `get_data_items(dt_params:dict[str,list[str]])->np.ndarray[str]`
+- `get_data_items(dt_params:dict[str,list[str]])->np.ndarray[np.ndarray[str]]`
     - To be run after `get_domains`
-    - Uses a dictionary `dt_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id`, `commodity`, and `domain` at this step)
+    - Uses a dictionary `dt_params` passed in which its keys are strings and each value is an array of strings (only includes `state_id`, `commodity`, and `domain` at this step)
     - Sets string that utilizes json and json trees to query the database
     - Returns a multidimensional numpy array giving the names of the data items a user can choose from (dependent on their choice of commodity and domain)
-- `get_domain_categories(dc_params:dict[str,list[str]])->Union[np.ndarray[str], None]`
-    - to be run after `get_data_items`
-    - Uses a dictionary `dc_params` passed in which its keys are strings and each values is a list of strings (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step)
+- `get_domain_categories(dc_params:dict[str,list[str]])->Union[np.ndarray[np.ndarray[str]], None]`
+    - To be run after `get_data_items`
+    - Uses a dictionary `dc_params` passed in which its keys are strings and each values is an array of strings (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step)
     - Checks whether the user specified `domain` as TOTAL. If they did, that means the only domain categories to choose from are named UNSPECIFIED. The `number_dt_question` and `intermediate_domain_categories` functions to solve this issue and either exits this function (if the user wants to use only 1 data item to compare states or years against each other), or provides other data items with `domain` as TOTAL that use the same units as the original data item chosen. They are also within the same commodity as the original data item chosen.
     - Otherwise sets string that utilizes json and json trees to query the database and uses it in `pd.read_sql`
     - Returns either a multidimensional numpy array giving the names of the domain categories, data items a user can choose from (dependent on their choices of commodity, domain, and data item), or `None` (in which the user want to use only 1 data item and they set the domain to TOTAL)
@@ -82,9 +82,9 @@ To explore my current code, first create a `data` folder, containing both files 
     - The user needs to press enter after either typing in 'multiple' or 'one' (but without the quotation marks)
     - Will likely turn into some sort of encoding function, called when a user clicks a button (Multiple or One)
     - Returns the user input as a string
-- `intermediate_domain_categories(idc_params: dict[str,list[str]])->np.ndarray[str]`
+- `intermediate_domain_categories(idc_params: dict[str,list[str]])->np.ndarray[np.ndarray[str]]`
     - Will be called by `get_domain_categories` if the user specified `domain` as 'TOTAL'
-    - looks at the the data item passed in with the dictionary `idc_params` and find the units it uses
+    - Looks at the the data item passed in with the dictionary `idc_params` (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step) and find the units it uses
     - Sets string that utilizes json and json trees to query the database based upon specifications set in `idc_params` as well as the units of the previously selected data item.
     - Runs `pd.read_sql` and returns a multidimensional numpy array of valid data items to `get_domain_categories` 
 - `get_years(year_params:dict[str, list[str]])-> list[str]`
@@ -110,8 +110,8 @@ To explore my current code, first create a `data` folder, containing both files 
     - Called by `final_query` and looks at the dictionary passed in as `params`
     - Looks at the amount of items stored with the keys `state_id` and `year` and sets them accordingly (1 state vs many years indicates group by on `year`, 1 year vs many states indicates group by on `state_id`)
     - If there is only one state listed and one year listed, or mutliple years and multiple years listed `check_if_time_barplot` is called to then set what `group_by` should be in the final query
-    - Returns the string representation of he dictionary key to be used in the group by statement in the final query
-- `execute_final_query(query:str, params: dict[str,list[str]])`
+    - Returns the string representation of the dictionary key to be used in the group by statement in the final query
+- `execute_final_query(query:str, params: dict[str,list[str]])-> list[float]`
     - To be run after `final_query`, as its input is `final_query`'s output (named `query`)
     - Utilizes json objects and the query using json trees to then pass in to `pd.read_sql`
     - Returns a list of floats with the values corresponding to the specifications set in the dictionary the user builds, as well as the operation they specify. The order of these values is determined by the list of values stored in the key name used as group by in the final query
