@@ -19,35 +19,35 @@ To explore my current code, first create a `data` folder, containing both files 
 ## Extended Function Descriptions
 ### Functions in the DB class located in irrigation_db.py
 
-- `__init__(self, path_db: str, create: bool = False)`
+- `__init__(self, path_db: str, create: bool = False)-> None`
     - constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
     - returns `None`
-- `connect(self)`
+- `connect(self)->None`
     - Sets up a connection to the database and enables foriegn key constraint checking
     - Returns `None` 
-- `close(self)`
+- `close(self)->None`
     - Closes the connection to the database
     - Returns `None`
-- `run_query(self, sql:str)`
+- `run_query(self, sql:str)-> pd.DataFrame`
     - Sets up connection to database
     - Performs `pd.read_sql`
     - Returns results from the query in a pandas DataFrame
-- `drop_all_tables(self)`
+- `drop_all_tables(self)-None`
     - Drops the `tState` and `tMain` tables made with `prep_data`, `load_data`, and `load_table`
     - Returns `None`
-- `build_tables(self)` 
+- `build_tables(self)->None` 
     - Drops the `tState` and `tMain` tables made with `prep_data`, `load_data`, and `load_table` in case they already exist
     - Builds empty relational table `tMain` with primary keys: `state_id`, `year`, `commodity`, `data_item`, `domain`, and `domain_category`. All columns are of the text type except a `value` column that is numeric because some entries in the USDA irrigation data had decimal points
     - Builds empty relational table `tState` with `state_id` as primary key. All columns are of the text type.
     - Returns `None`
-- `load_data(self)`
+- `load_data(self)->None`
     - Inserts preprocessed data created in `prep_data` into the appropriate relational tables (`tMain` or `tState`) using sql and by calling `load_table`
     - Returns `None`
-- `load_table(self,sql:str, data:pd.DataFrame)`
+- `load_table(self,sql:str, data:pd.DataFrame)->None`
     - Takes in a sql query represented stored as string named `sql`
     - Uses the `to_dict` function in pandas to convert the pandas DataFrame passed in into a dictionary and inserts the data row by row into the table specified by the sql query stored as `sql`
     - Returns None
-- `prep_data(self)`
+- `prep_data(self)->dict[str, pd.DataFrame]`
     - reads the data stored in the Irrigation_Data.csv file
     - drops all unnecessary columns and rows that have either no information or information that does relate to this project's purpose
     - casts columns to their proper types
@@ -55,58 +55,58 @@ To explore my current code, first create a `data` folder, containing both files 
     - Returns a dictionary with its keys as strings, and their corresponding values as pandas DataFrames
 
 ### Functions in demo.ipynb
-- `get_commodity()`
+- `get_commodity()->np.ndarray[str]`
     - Queries `tMain` for distinct commodities (energy, facilities & equipment, labor, practices, pumps, water, and wells)
     - Returns a multidimensional numpy array giving the names of the commodities a user can choose from
-- `get_domains(comm_params:dict[str,list[str]])`
+- `get_domains(comm_params:dict[str,list[str]])->np.ndarray[str]`
     - To be run after `get_commodity`
     - Uses a dictionary `comm_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id` and `commodity` at this step)
     - Sets string that utilizes json and json trees to query the database
     - Uses `pd.read_sql` with the query
     - Returns a multidimensional numpy array giving the names of the domains a user can choose from (dependent on their choice of commodity)
-- `get_data_items(dt_params:dict[str,list[str]])`
+- `get_data_items(dt_params:dict[str,list[str]])->np.ndarray[str]`
     - To be run after `get_domains`
     - Uses a dictionary `dt_params` passed in which its keys are strings and each value is a list of strings (only includes `state_id`, `commodity`, and `domain` at this step)
     - Sets string that utilizes json and json trees to query the database
     - Returns a multidimensional numpy array giving the names of the data items a user can choose from (dependent on their choice of commodity and domain)
-- `get_domain_categories(dc_params:dict[str,list[str]])`
+- `get_domain_categories(dc_params:dict[str,list[str]])->Union[np.ndarray[str], None]`
     - to be run after `get_data_items`
     - Uses a dictionary `dc_params` passed in which its keys are strings and each values is a list of strings (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step)
     - Checks whether the user specified `domain` as TOTAL. If they did, that means the only domain categories to choose from are named UNSPECIFIED. The `number_dt_question` and `intermediate_domain_categories` functions to solve this issue and either exits this function (if the user wants to use only 1 data item to compare states or years against each other), or provides other data items with `domain` as TOTAL that use the same units as the original data item chosen. They are also within the same commodity as the original data item chosen.
     - Otherwise sets string that utilizes json and json trees to query the database and uses it in `pd.read_sql`
     - Returns either a multidimensional numpy array giving the names of the domain categories, data items a user can choose from (dependent on their choices of commodity, domain, and data item), or `None` (in which the user want to use only 1 data item and they set the domain to TOTAL)
-- `number_dt_question()`
+- `number_dt_question() -> str`
     - Called in `get_domain_categories` when handling case in which user had chosen domain = TOTAL
     - Utilizes `input()` function and used in the event the user specified `domain` as 'TOTAL'
     - Asks whether the user only wants one data item to analyze (and therefore look at the relationships between states or years) or multiple data items
     - The user needs to press enter after either typing in 'multiple' or 'one' (but without the quotation marks)
     - Will likely turn into some sort of encoding function, called when a user clicks a button (Multiple or One)
     - Returns the user input as a string
-- `intermediate_domain_categories(idc_params: dict[str,list[str]])`
+- `intermediate_domain_categories(idc_params: dict[str,list[str]])->np.ndarray[str]`
     - Will be called by `get_domain_categories` if the user specified `domain` as 'TOTAL'
     - looks at the the data item passed in with the dictionary `idc_params` and find the units it uses
     - Sets string that utilizes json and json trees to query the database based upon specifications set in `idc_params` as well as the units of the previously selected data item.
     - Runs `pd.read_sql` and returns a multidimensional numpy array of valid data items to `get_domain_categories` 
-- `get_years(year_params:dict[str, list[str]])`
+- `get_years(year_params:dict[str, list[str]])-> list[str]`
     - To be run after `get_domain_categories`
     - For each state in `year_params`, the database is queried following all other specifications found in `year_params`, which a dictionary in which the keys are string and value is a list of strings. The keys at this point include `state_id`, `commodity`, `domain`, `data_item`, and potentially `domain_category` depending on the actions performed in `get_domain_categories`. The query returns the available years and adds them to a list.
     - It then looks at how many times a unique year appeared in this list, and will be returned to the user if the amount of times matches how many states were specified in `state_id` in the passed in dictionary.
     - Currently returns the valid years in the form of a list of lists, which hold strings. This may change to a np.ndarray to match the other functions described above.
-- `which_statistic()`
+- `which_statistic()-> str`
     - Meant to be an encoder to a button in the final tool, where a user picks minimum, maximum, average, or sum to be the statistic they desire to visualize.
     - The sql represenation of these functions will be returned as strings (either MIN, MAX, AVG, or SUM).
     - Essentially dictates the `operation` argument the user passes in to the `final_query` function described below.
-- `check_if_time_barplot()`
+- `check_if_time_barplot()-> str`
     - Called in the case the user either has multiple entries or 1 entry correponding to both `state_id` and `year`.
     - Asks the user whether they are comparing states or years, meaning which one of them would be on the x axis in a visualization
     - Used to aid in the `final_query` and `set_group_by` functions, but in final version will likely be some sort of encoding function called when a user clicks a button (States or Years)
     - The user right now needs to press enter after either typing in 'states' or 'years' (but without the quotation marks)
-- `final_query(operation:str, params:dict[str,list[str]], line_graph=False)
+- `final_query(operation:str, params:dict[str,list[str]], line_graph=False)-> str`
     - Makes the final query to the database that gets a list of values using the aggregation method (max, min, avg, sum) chosen by the user (it is named `operation` here)
     - Looks at the amount of items stored at each key in the dictionary and whether the user wants a line graph. It then sets the group by statement in the final sql query accordingly. It does so by storing the dictionary key name in a variabel called `group_by`
     - Calls `set_group_by` in the event `group_by` needs to either `state_id` or `year`
     - Returns a string with the final query to be made to the database in `execute_final_query'
-- `set_group_by(params:dict[str,list[str]])`
+- `set_group_by(params:dict[str,list[str]])->str`
     - Called by `final_query` and looks at the dictionary passed in as `params`
     - Looks at the amount of items stored with the keys `state_id` and `year` and sets them accordingly (1 state vs many years indicates group by on `year`, 1 year vs many states indicates group by on `state_id`)
     - If there is only one state listed and one year listed, or mutliple years and multiple years listed `check_if_time_barplot` is called to then set what `group_by` should be in the final query
