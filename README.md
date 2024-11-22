@@ -14,10 +14,10 @@ A more detailed description of my project can be found in my writeup found here.
 
 
 ## Quick Start Guide
-To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found. You'll then also want to create a `src` folder containing the [irrigation_db.py](src/irrigation_db.py) file found in the `src` folder in this repository. This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the [demo.ipynb](demo.ipynb) notebook to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. 
+To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found. You'll then also want to create a `src` folder containing the `irrigation_db.py` file found in the `src` folder in this repository. This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the `demo.ipynb` notebook to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. 
 
 ## Extended Function Descriptions
-### Functions in the DB class located in irrigation_db.py
+### Functions in the DB class located in `irrigation_db.py`
 
 - `__init__(self, path_db: str, create: bool = False)-> None`
     - Constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
@@ -54,7 +54,7 @@ To explore my current code, first create a `data` folder, containing both files 
     - Cleans the 'Domain Category' and 'Data Item' columns in the dataframe to remove redundant information across columns. More specific information on what is removed can be found in comments in the irrigation_db.py file 
     - Returns a dictionary with its keys as strings, and their corresponding values as pandas DataFrames
 
-### Functions in demo.ipynb
+### Functions in `demo.ipynb`
 - `get_commodity()->np.ndarray[np.ndarray[str]]`
     - Queries `tMain` for distinct commodities (energy, facilities & equipment, labor, practices, pumps, water, and wells)
     - Returns a multidimensional numpy array giving the names of the commodities a user can choose from
@@ -86,7 +86,7 @@ To explore my current code, first create a `data` folder, containing both files 
     - Will be called by `get_domain_categories` if the user specified `domain` as 'TOTAL'
     - Looks at the the data item passed in with the dictionary `idc_params` (only includes `state_id`, `commodity`, `domain`, and `data_item` at this step) and find the units it uses
     - Sets string that utilizes json and json trees to query the database based upon specifications set in `idc_params` as well as the units of the previously selected data item.
-    - Runs `pd.read_sql` and returns a multidimensional numpy array of valid data items to `get_domain_categories` 
+    - Runs `pd.read_sql` and returns a multidimensional numpy array of valid data items (dependent on the user's previous choices of commodity, domain, and data item) to `get_domain_categories` 
 - `get_years(year_params:dict[str, list[str]])-> list[str]`
     - To be run after `get_domain_categories`
     - For each state in `year_params`, the database is queried following all other specifications found in `year_params`, which a dictionary in which the keys are string and value is a list of strings. The keys at this point include `state_id`, `commodity`, `domain`, `data_item`, and potentially `domain_category` depending on the actions performed in `get_domain_categories`. The query returns the available years and adds them to a list.
@@ -102,9 +102,9 @@ To explore my current code, first create a `data` folder, containing both files 
     - Used to aid in the `final_query` and `set_group_by` functions, but in final version will likely be some sort of encoding function called when a user clicks a button (States or Years)
     - The user right now needs to press enter after either typing in 'states' or 'years' (but without the quotation marks)
 - `final_query(operation:str, params:dict[str,list[str]], line_graph=False)-> str`
-    - Makes the final query to the database that gets a list of values using the aggregation method (max, min, avg, sum) chosen by the user (it is named `operation` here)
-    - Looks at the amount of items stored at each key in the dictionary and whether the user wants a line graph. It then sets the group by statement in the final sql query accordingly. It does so by storing the dictionary key name in a variabel called `group_by`
-    - Calls `set_group_by` in the event `group_by` needs to either `state_id` or `year`
+    - Makes the final query using json trees to the database,  which would get a list of values using the aggregation method (max, min, avg, sum) chosen by the user (it is named `operation` here). 
+    - Looks at the amount of items stored at each key in the dictionary passed in as `params` and whether the user wants a line graph. It then sets the group by statement in the final sql query accordingly. It does so by storing the dictionary key name in a variable called `group_by`. The `params` dictionary at this point should have the keys `state_id`, `commodity`, 'domain`, 'data_item`, possibly `domain_category`, and `year`.
+    - Calls `set_group_by` in the event `group_by` needs to be either `state_id` or `year`
     - Returns a string with the final query to be made to the database in `execute_final_query'
 - `set_group_by(params:dict[str,list[str]])->str`
     - Called by `final_query` and looks at the dictionary passed in as `params`
@@ -114,4 +114,4 @@ To explore my current code, first create a `data` folder, containing both files 
 - `execute_final_query(query:str, params: dict[str,list[str]])-> list[float]`
     - To be run after `final_query`, as its input is `final_query`'s output (named `query`)
     - Utilizes json objects and the query using json trees to then pass in to `pd.read_sql`
-    - Returns a list of floats with the values corresponding to the specifications set in the dictionary the user builds, as well as the operation they specify. The order of these values is determined by the list of values stored in the key name used as group by in the final query
+    - Returns a list of floats with the values corresponding to the specifications set in the dictionary the user builds, as well as the operation they specify. The dictionary is named `params` here and should have the keys `state_id`, `commodity`, 'domain`, 'data_item`, possibly `domain_category`, and `year`. The order of these values is determined by the list of values stored in the key name used as group by in the final query
