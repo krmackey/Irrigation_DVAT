@@ -2,7 +2,7 @@
 ### Kirin Mackey
 
 ## Brief Description
-Irrigation is an essential device in the U.S. agricultural industry, as it improves efficiency of farms and offers a way for states that have a dry and arid climate to sustain themselves. It has many components, such as energy, facilities and equipment, labor, practices, water, pumps, and wells. All of these components have further details, which can reveal the negative effects of irrigation such as the depletion of significant aquifers in the United States.  On the other hand, these details can reveal sustainable practices and indicate future irrigation use, such as the amount of land irrigated with recycled water or the amount of land equipped for irrigation in a certain state. Learning about these details and finding statistics about them is an arduous task that involves searching through multiple research reports, especially if the user wants to look at a particular state or year.
+Irrigation is an essential device in the U.S. agricultural industry, as it improves efficiency of farms and offers a way for states that have a dry and arid climate to sustain themselves. It has many components, such as energy, facilities and equipment, labor, practices, water, pumps, and wells. All of these components have further details, which can reveal the negative effects of irrigation such as the depletion of significant aquifers in the United States. On the other hand, these details can reveal sustainable practices and indicate future irrigation use, such as the amount of land irrigated with recycled water or the amount of land equipped for irrigation in a certain state. Learning about these details and finding statistics about them is an arduous task that involves searching through multiple research reports, especially if the user wants to look at a particular state or year.
 
 
 In this project, I am going to make a tool in Dash where a user can visualize and analyze irrigation data from the United States Departmentment of Agriculture (USDA). By using this tool, a user can specify an individual or multiple states, the specific data they want to visualize or analyze, and what years the data to be visualized or analyzed reflects. The tool can be used to aid in creating research reports, serve as reference material for government officials, and be used in classroom settings for students studying environmental science and its associated public policies and economics.
@@ -19,14 +19,19 @@ To explore my current code, first create a `data` folder, containing both files 
 ## Function Descriptions
 ### Functions in the DB class located irrigation_db.py
 
-- `__init__`
-    - hello
-    - 
-- `connect`
+- `__init__(self, path_db: str, create: bool = False)`
+    - constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
+    - returns `None`
+- `connect(self)`
+    - sets up a connection to the database and enables foriegn key constraint checking
+    - returns `None` 
 - `close`
+    - closes the connection to the database
 - `run_query`
 - `drop_all_tables`
+    - drops the tState and tMain tables made with `prep_data`, `load_data`, and `load_table`
 - `build_tables`
+- 
 - `load_data`
 - `load_table`
 - `prep_data`
