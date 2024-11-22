@@ -30,7 +30,7 @@ To explore my current code, first create a `data` folder, containing both files 
 - `run_query`
 - `drop_all_tables`
     - drops the tState and tMain tables made with `prep_data`, `load_data`, and `load_table`
-- `build_tables`
+- `build_tables` ##get rid fo are you sure
 - 
 - `load_data`
 - `load_table`
