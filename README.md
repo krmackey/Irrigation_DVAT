@@ -10,14 +10,14 @@ In this project, I am going to make a tool in Dash where a user can visualize an
 The current status of my project is that there is a database containing cleaned data, and a series of functions querying it using values stored in a dictionary. Each function represents a decision the user will have to make, and can be represented with this [flowchart](writeup/Flowchart_of_decisions.png). The current functions account for the decisions regarding commodity and after. **They must be done in the order specified.** In my final project, these functions will be called in the background when a user clicks a button, checks a box in a checklist, or selects an option in a dropdown list. Whenever the user performs these actions, a dictionary will be updated.
 
 
-A more detailed description of my project can be found in my writeup found here.
+A more detailed description of my project can be found in my writeup found [here](writeup/Revised_Project_Proposal.pdf).
 
 
 ## Quick Start Guide
-To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found. You'll then also want to create a `src` folder containing the `irrigation_db.py` file found in the `src` folder in this repository. This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the `demo.ipynb` notebook to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. 
+To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA, and state abbreviation data used by the CDC. More information about them can be read about in the data description section of my project proposal found [here](writeup/Revised_Project_Proposal.pdf). You'll then also want to create a `src` folder containing the `irrigation_db.py` file found in the `src` folder in this repository and linked [here](src/irrigation_db.py). This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the `demo.ipynb` notebook (linked [here](demo.ipynb) )to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. 
 
 ## Extended Function Descriptions
-### Functions in the DB class located in `irrigation_db.py`
+### Functions in the DB class located in [`irrigation_db.py`](src/irrigation_db.py)
 
 - `__init__(self, path_db: str, create: bool = False)-> None`
     - Constructor for the database that is found at `path_db`, a string object, specified by the user. If the user wishes to create the database, they can set the boolean `create` to `True`.
