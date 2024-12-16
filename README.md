@@ -11,9 +11,10 @@ The current status of my project is that there is a database containing cleaned 
 
 
 A more detailed description of my project can be found in my writeup found [here](writeup/Revised_Project_Proposal.pdf).
+## Prerequisties
+- Python 3.13 or higher
 
-
-## Quick Start Guide
+## Quick Setup Guide
 To open this tool, follow the steps below:
 
 1. Clone this repository to obtain all required data and code files by running the below on your terminal:
@@ -24,7 +25,18 @@ To open this tool, follow the steps below:
    ```bash
     pip install -r requirements.txt
     ```
-3. run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine
+3. Run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine:
+   ```bash
+    python3 main_dash.py
+   ```
+## How to Use Tool
+1. Choose the type of visualization you want (Bar Plot or Line Graph). If you only want a data table, pick the type of visualization that would reflect your desired results. Are you looking at change over time or comparing distinct groups of data to each other?
+2. Choose the state(s) you want your final graph and/or data table to reflect. The limit you can pick is 5.
+3. Choose what commodity of irrigation (energy, facilities & equipment, labor, practices, pumps, water, wells) you want to analyze/visualize.
+4. Choose what domain (available choices dependent on the type commodity you chose) of the irrigation data you want to analyze/visualize.
+5. Choose what data item (available choices dependent on the type commodity and domain you chose) of the irrigation data you want to analyze/visualize.
+6. If you chose TOTAL as the domain, you will be asked if you want to visualize/analyze only one data item, or multiple data items.
+       - If you chose 'Multiple Data Items' you will be presented with a checklist to choose up to 4 more data items you want to visualize/analyze alongside the initial one you chose. They use the same units as the first data item you chose, and also have their domain as TOTAL.
 
 To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA (linked [here](data/Irrigation_Data.csv)), and state abbreviation data used by the CDC (linked [here](data/data-map-state-abbreviations.csv)). More information about them can be read about in the data description section of my project proposal found [here](writeup/Revised_Project_Proposal.pdf). You'll then also want to create a `src` folder containing the `irrigation_db.py` file found in the `src` folder in this repository and linked [here](src/irrigation_db.py). This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the `demo.ipynb` notebook (linked [here](demo.ipynb))to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. It should be located in the same directory level as your `src` and `data` folders (much like the structure of this GitHub repository). More documentation on the code in both `irrigation_db.py` and `demo.ipynb` can be found below. 
 
