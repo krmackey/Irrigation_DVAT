@@ -19,13 +19,13 @@ To open this tool, follow the steps below:
     ```bash
     git clone https://github.com/krmackey/Irrigation_DVAT.git
     ```
-2. Install all the dependencies required for this project by running the below on your terminal:
+2. Install all the dependencies required for this project by running the below on your terminal (may instead use `pip3` rather than `pip` if applicable):
    ```bash
     pip install -r requirements.txt
     ```
-3. Run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine:
+3. Run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine (may instead use `python3` rather than `python` if applicable):
    ```bash
-    python3 main_dash.py
+    python main_dash.py
    ```
 ## How to Use Tool
 1. Choose the type of visualization you want (Bar Plot or Line Graph). If you only want a data table, pick the type of visualization that would reflect your desired results. Are you looking at change over time or comparing distinct groups of data to each other?
