@@ -27,8 +27,10 @@ To open this tool, follow the steps below:
    ```bash
     python main_dash.py
    ```
-**Running `main_dash.py` may take a couple minutes because it preprocesses the data in the files in the `data` folder, and then creates a database to be saved as `irrigation.db` that will be saved in the same `data` folder**
+
 4. The output of running `main_dash.py` will be a URL, to which you can then access on a web browser.
+**Running `main_dash.py` may take a couple minutes because it preprocesses the data in the files in the `data` folder, and then creates a database to be saved as `irrigation.db` that will be saved in the same `data` folder**
+
 ## How to Use Tool
 1. Choose the type of visualization you want (Bar Plot or Line Graph). If you only want a data table, pick the type of visualization that would reflect your desired results. Are you looking at change over time or comparing distinct groups of data to each other?
 2. Choose the state(s) you want your final graph and/or data table to reflect. You can pick up to 5.
