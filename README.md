@@ -28,7 +28,7 @@ To open this tool, follow the steps below:
     python main_dash.py
    ```
 
-4. The output of running `main_dash.py` will be a URL, to which you can then access on a web browser.
+4. The output of running `main_dash.py` will be a URL, to which you can then access on a web browser. Ignore any warning of the dash_html_components package being deprecated.
 
 
 
