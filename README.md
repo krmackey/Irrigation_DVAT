@@ -8,7 +8,7 @@ This project creates a tool in Dash where a user can visualize and analyze irrig
 
 The tool can be used to aid in creating research reports, serve as reference material for government officials, and be used in classroom settings for students studying environmental science and its associated public policies and economics.
 
-A more detailed description of the project can be found [here](writeup/Revised_Project_Proposal.pdf). Further documentation on how the code works can be found in each .py file (main_dash.py and all files in the `src` folder).
+A more detailed description of the project can be found [here](writeup/Revised_Project_Proposal.pdf). Further documentation on how the code works can be found in each .py file (`main_dash.py` and all files in the `src` folder).
 ## Prerequisties
 - Python 3.13 or higher
 
