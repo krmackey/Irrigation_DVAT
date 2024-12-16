@@ -16,7 +16,10 @@ A more detailed description of my project can be found in my writeup found [here
 ## Quick Start Guide
 To explore my current code, first create a `data` folder, containing both files held in the `data` folder in this repository. They hold irrigation data collected by the USDA (linked [here](data/Irrigation_Data.csv)), and state abbreviation data used by the CDC (linked [here](data/data-map-state-abbreviations.csv)). More information about them can be read about in the data description section of my project proposal found [here](writeup/Revised_Project_Proposal.pdf). You'll then also want to create a `src` folder containing the `irrigation_db.py` file found in the `src` folder in this repository and linked [here](src/irrigation_db.py). This file builds a database, cleans the data from the USDA and CDC, and inserts the cleaned data into the database's relational tables. Lastly, download the `demo.ipynb` notebook (linked [here](demo.ipynb))to look at my functions with some documentation, as well as some examples (one of which directly references my writeup) with some instructions to run through. It should be located in the same directory level as your `src` and `data` folders (much like the structure of this GitHub repository). More documentation on the code in both `irrigation_db.py` and `demo.ipynb` can be found below. 
 
-## Packages to Install before runnning main_dash.py
+## Packages to Install before running main_dash.py
+```bash
+pip install -r requirements.txt
+```
 
 ## Extended Function Descriptions
 ### Functions in the DB class located in [`irrigation_db.py`](src/irrigation_db.py)
