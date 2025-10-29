@@ -1074,7 +1074,7 @@ def display_graph(n_clicks:int,
     If all required selections are made, acquires applicable valid selections (due to callback remembering past selections) to then use in a final query to the irrigation database (uses final_query and execute_final_query functions found in the Irr_DB class defined in Irr_DB.py)
     Gets result from final query to the database and creates line graph or bar plot depending on earlier user choice by calling make_bar_plot or make_line_graph found in visualization.py, and graph is set to be displayed when the generate graph button is clicked
 
-    Returns a plotly graph object, a dictionary (key and value are strings) to describe whether graph is displayed, and another dictionary (key and value are strings) to describe whether the generate graph button is disabled
+    Returns a plotly graph object, a dictionary (key and value are strings) to describe whether graph is displayed, and a boolean to describe whether the generate graph button is disabled (True for disabled, False for not disabled)
     '''
     
     style = {'display': 'inherit'} #by default the graph is shown (but its default value is {} so empty graph will appear), and the button to generate the graph is disabled
@@ -1193,7 +1193,7 @@ def display_save_fig_button(n_clicks:int, graph_clicks:int, output_fig:plotly.gr
     names newly created figure using the number of times the save figure button has been clicked (n_clicks), so user should rename the file
     and button is then disabled. The figure is written to a static image by using kaleido, as described by plotly documentation. 
     
-    Returns a dictionary (key and value are strings) determining whether the save figure button is disabeld or not
+    Returns a boolean determining whether the save figure button is disabled (True) or not (False)
     '''
     
     disabled=False #by default button is not disabled
@@ -1281,7 +1281,7 @@ def display_table(n_clicks:int,
     
     Returns a list (one item a dash bootstrap table component, and the other a str for the label above the table), 
     and a dictionary (key and value are strings) that describes whether the container holding the data table and its title is displayed or not,
-    and a dictionary (key and value are strings) that describes whether the generate data table button is disabled 
+    and a boolean that describes whether the generate data table button is disabled (True for disabled, False for not disabled) 
     '''
 
     disabled=False #by default the button to generate the data table is enabled
