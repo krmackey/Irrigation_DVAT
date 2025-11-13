@@ -23,7 +23,7 @@ To open this tool, follow the steps below:
    ```bash
     pip install -r requirements.txt
     ```
-3. Run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine (may instead use `python3` rather than `python` if applicable):
+3. Run `main_dash.py` in your terminal once you navigate to the cloned repository on your local machine (type `cd Irrigation_DVAT` and click enter). You may instead use `python3` rather than `python` to run `main_dash.py` if applicable:
    ```bash
     python main_dash.py
    ```
